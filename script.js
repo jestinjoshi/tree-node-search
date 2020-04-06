@@ -19,24 +19,14 @@ function displayResult(resultArray) {
 
 function search(searchQuery) {
     let resultArray = [];
-    for (var data of NAMES) {
-        if (new RegExp(searchQuery, "i").test(data.name)) {
-            resultArray.push(data);
-        }
-        if (data.children) {
-            for (var child of data.children) {
-                if (new RegExp(searchQuery, "i").test(child.name)) {
-                    resultArray.push(child);
-                }
-                if (child.children) {
-                    for (var grandChild of child.children) {
-                        if (
-                            new RegExp(searchQuery, "i").test(grandChild.name)
-                        ) {
-                            resultArray.push(grandChild);
-                        }
-                    }
-                }
+    traverseArray(NAMES, searchQuery);
+    function traverseArray(array, searchQuery) {
+        for (let data of array) {
+            if (new RegExp(searchQuery, "i").test(data.name)) {
+                resultArray.push(data);
+            }
+            if (data.children) {
+                traverseArray(data.children, searchQuery);
             }
         }
     }
